@@ -6,17 +6,6 @@ import Message from '../models/Message.js';
 import Conversation from '../models/Conversation.js';
 
 export const setupSocket = (io, app) => {
-    // Setup Redis Adapter for clustering
-    if (redisClient.isOpen) {
-        const pubClient = redisClient.duplicate();
-        const subClient = redisClient.duplicate();
-
-        Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
-            io.adapter(createAdapter(pubClient, subClient));
-            console.log('Redis adapter hooked up for Socket.io');
-        });
-    }
-
     // Expose io to Express app for use in controllers
     if (app) {
         app.set('io', io);
