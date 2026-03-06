@@ -43,31 +43,7 @@ app.use(express.json());
 app.set('io', io);
 
 // Routes
-import rateLimit from 'express-rate-limit';
-
-// Trust proxy for rate limiting behind Railway's load balancer
-app.set('trust proxy', 1);
-
-const globalLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 500,
-    standardHeaders: true,
-    legacyHeaders: false,
-    validate: { xForwardedForHeader: false },
-    message: { message: "Too many requests from this IP, please try again after 15 minutes" }
-});
-
-const authLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 50,
-    standardHeaders: true,
-    legacyHeaders: false,
-    validate: { xForwardedForHeader: false },
-    message: { message: "Too many login attempts from this IP, please try again after 15 minutes" }
-});
-
-app.use(globalLimiter);
-app.use('/api/auth', authLimiter, authRoutes);
+app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/friends', friendRoutes);
 app.use('/api/messages', messageRoutes);
