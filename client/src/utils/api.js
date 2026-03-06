@@ -1,7 +1,13 @@
 import axios from 'axios';
 
+let baseApiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+baseApiUrl = baseApiUrl.replace(/\/+$/, ''); // Strip any trailing slashes
+if (!baseApiUrl.endsWith('/api') && !baseApiUrl.includes('localhost:5000/api')) {
+    baseApiUrl += '/api'; // Append /api cleanly
+}
+
 const API = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+    baseURL: baseApiUrl,
 });
 
 // Attach JWT token to every request

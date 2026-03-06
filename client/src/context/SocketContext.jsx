@@ -20,7 +20,10 @@ export const SocketProvider = ({ children }) => {
 
     useEffect(() => {
         if (token && user) {
-            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+            let apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+            apiUrl = apiUrl.replace(/\/+$/, ''); // Strip any trailing slashes
+            if (apiUrl.endsWith('/api')) apiUrl = apiUrl.slice(0, -4); // Strip /api tag
+
             const socket = io(apiUrl, {
                 auth: { token },
                 transports: ['websocket', 'polling'],

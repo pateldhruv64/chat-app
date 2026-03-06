@@ -15,11 +15,13 @@ import User from './models/User.js';
 
 const app = express();
 const server = createServer(app);
+const envClientUrl = process.env.CLIENT_URL ? process.env.CLIENT_URL.replace(/\/$/, '') : 'https://chat-app-umber-psi-65.vercel.app';
+
 const allowedOrigins = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
     'http://localhost:4173',
-    process.env.CLIENT_URL || 'https://chat-app-umber-psi-65.vercel.app'
+    envClientUrl
 ];
 
 const io = new Server(server, {
