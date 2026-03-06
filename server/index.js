@@ -18,11 +18,9 @@ const server = createServer(app);
 const allowedOrigins = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
-    'http://localhost:4173'
+    'http://localhost:4173',
+    process.env.CLIENT_URL || 'https://chat-app-umber-psi-65.vercel.app'
 ];
-if (process.env.CLIENT_URL) {
-    allowedOrigins.push(process.env.CLIENT_URL);
-}
 
 const io = new Server(server, {
     cors: {
