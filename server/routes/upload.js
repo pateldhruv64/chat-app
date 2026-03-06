@@ -37,23 +37,39 @@ const uploadAvatar = multer({
 });
 
 // POST /api/upload/image — upload chat image
-router.post('/image', auth, uploadChatImage.single('image'), (req, res) => {
-    try {
-        if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
-        res.json({ url: req.file.path, publicId: req.file.filename });
-    } catch (err) {
-        res.status(500).json({ message: 'Upload failed' });
-    }
+router.post('/image', auth, (req, res) => {
+    const upload = uploadChatImage.single('image');
+    upload(req, res, (err) => {
+        if (err) {
+            console.error('Multer/Cloudinary Upload Error (Chat Image):', err);
+            return res.status(500).json({ message: 'Upload failed', error: err.message });
+        }
+        try {
+            if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
+            res.json({ url: req.file.path, publicId: req.file.filename });
+        } catch (error) {
+            console.error('Post-upload Error:', error);
+            res.status(500).json({ message: 'Upload processing failed' });
+        }
+    });
 });
 
 // POST /api/upload/avatar — upload profile avatar
-router.post('/avatar', auth, uploadAvatar.single('avatar'), async (req, res) => {
-    try {
-        if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
-        res.json({ url: req.file.path, publicId: req.file.filename });
-    } catch (err) {
-        res.status(500).json({ message: 'Upload failed' });
-    }
+router.post('/avatar', auth, (req, res) => {
+    const upload = uploadAvatar.single('avatar');
+    upload(req, res, (err) => {
+        if (err) {
+            console.error('Multer/Cloudinary Upload Error (Avatar):', err);
+            return res.status(500).json({ message: 'Upload failed', error: err.message });
+        }
+        try {
+            if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
+            res.json({ url: req.file.path, publicId: req.file.filename });
+        } catch (error) {
+            console.error('Post-upload Error:', error);
+            res.status(500).json({ message: 'Upload processing failed' });
+        }
+    });
 });
 
 export default router;
