@@ -20,9 +20,11 @@ export const SocketProvider = ({ children }) => {
 
     useEffect(() => {
         if (token && user) {
-            const socket = io(import.meta.env.VITE_API_URL || 'http://localhost:5000', {
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+            const socket = io(apiUrl, {
                 auth: { token },
                 transports: ['websocket', 'polling'],
+                secure: apiUrl.startsWith('https')
             });
 
             socket.on('connect', () => {

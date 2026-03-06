@@ -22,16 +22,17 @@ export const connectRedis = async () => {
     console.log('✅ Running socket state in Memory Mode (No Redis)');
 };
 
-// Intelligent proxy wrapper to seamlessly downgrade to Memory tracking
 const redisClient = {
     get isOpen() { return false; },
     duplicate: () => redisClient,
     sAdd: async (key, val) => {
         if (!memorySets.has(key)) memorySets.set(key, new Set());
         memorySets.get(key).add(val);
+        return 1;
     },
     sRem: async (key, val) => {
-        if (memorySets.has(key)) memorySets.set(key, new Set([...memorySets.get(key)].filter(x => x !== val)));
+        if (memorySets.has(key)) memorySets.get(key).delete(val);
+        return 1;
     },
     sCard: async (key) => {
         return memorySets.has(key) ? memorySets.get(key).size : 0;
