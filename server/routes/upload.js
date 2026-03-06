@@ -11,8 +11,8 @@ const chatStorage = new CloudinaryStorage({
     cloudinary,
     params: {
         folder: 'chatapp/messages',
-        allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
-        transformation: [{ width: 1200, quality: 'auto', fetch_format: 'auto' }],
+        allowedFormats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
+        transformation: [{ width: 1200, crop: 'limit' }],
     },
 });
 
@@ -21,8 +21,8 @@ const avatarStorage = new CloudinaryStorage({
     cloudinary,
     params: {
         folder: 'chatapp/avatars',
-        allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
-        transformation: [{ width: 400, height: 400, crop: 'fill', quality: 'auto' }],
+        allowedFormats: ['jpg', 'jpeg', 'png', 'webp'],
+        transformation: [{ width: 400, height: 400, crop: 'fill' }],
     },
 });
 
