@@ -45,6 +45,9 @@ app.set('io', io);
 // Routes
 import rateLimit from 'express-rate-limit';
 
+// Trust proxy for rate limiting behind Railway's load balancer
+app.set('trust proxy', 1);
+
 const globalLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 500,
