@@ -139,12 +139,12 @@ export const setupSocket = (io, app) => {
 
                 const { conversationId, receiverId, text, replyTo, imageUrl } = data;
 
-                const hasText = text && text.trim().length > 0;
-                const hasImage = imageUrl && imageUrl.trim().length > 0;
+                const hasText = text !== undefined && text !== null && text.trim().length > 0;
+                const hasImage = imageUrl !== undefined && imageUrl !== null && imageUrl.trim().length > 0;
 
                 if (!hasText && !hasImage) return;
 
-                // Sanitize text
+                // Sanitize text if present, otherwise set to empty string
                 const sanitized = hasText ? text.trim().replace(/<[^>]*>/g, '').substring(0, 2000) : '';
 
                 // Check if blocked
