@@ -27,7 +27,7 @@ export const signup = async (req, res) => {
             return res.status(400).json({ message: 'You must be at least 13 years old' });
         }
 
-        const existingUser = await User.findOne({ username: username.toLowerCase() });
+        const existingUser = await User.findOne({ username: { $regex: new RegExp(`^${username}$`, 'i') } });
         if (existingUser) {
             return res.status(400).json({ message: 'Username already taken' });
         }
@@ -72,7 +72,7 @@ export const login = async (req, res) => {
             return res.status(400).json({ message: 'Username and password are required' });
         }
 
-        const user = await User.findOne({ username: username.toLowerCase() });
+        const user = await User.findOne({ username: { $regex: new RegExp(`^${username}$`, 'i') } });
         if (!user) {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
